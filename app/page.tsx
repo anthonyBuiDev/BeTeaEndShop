@@ -1,7 +1,7 @@
-export default async function Home() {
+export default function Home() {
   return (
     <main>
-      <h1>Welcome to nextjs</h1>
+      <h1>Welcome to NextJs</h1>
     </main>
   );
 }
