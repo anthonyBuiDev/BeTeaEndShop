@@ -1,3 +1,4 @@
+import Nav from "@/components/navigation/nav";
 import { Provider } from "@/utils/Providers";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -20,16 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Provider>
-          <nav>
-            <ul className="flex justify-between gap-2 bg-blue-500 px-4">
-              <li>
-                <Link href={"/"}>Home</Link>
-              </li>
-              <li>
-                <Link href={"/about"}>About</Link>
-              </li>
-            </ul>
-          </nav>
+          <Nav />
           {children}
         </Provider>
       </body>

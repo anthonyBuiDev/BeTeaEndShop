@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss"
-
+// import { withUt } from "uploadthing/tw"
 const config = {
   darkMode: ["class"],
   content: [
@@ -7,7 +7,7 @@ const config = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-	],
+  ],
   prefix: "",
   theme: {
     container: {
@@ -18,6 +18,18 @@ const config = {
       },
     },
     extend: {
+      maxWidth: {
+        "8xl": "88rem",
+      },
+      minHeight: {
+        "50vh": "50vh",
+      },
+      maxHeight: {
+        "50vh": "50vh",
+      },
+      height: {
+        "88": "22rem",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
