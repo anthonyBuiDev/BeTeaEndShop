@@ -1,24 +1,30 @@
+import { createId } from "@paralleldrive/cuid2"
+
 import {
   boolean,
   integer,
   pgEnum,
   pgTable,
   primaryKey,
+  real,
+  serial,
   text,
   timestamp,
 } from "drizzle-orm/pg-core"
-
 import type { AdapterAccountType } from "next-auth/adapters"
+
 export const RoleEnum = pgEnum("roles", ["user", "admin"])
 
 export const users = pgTable("user", {
   id: text("id")
+    .notNull()
     .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
+    .$defaultFn(() => createId()),
   name: text("name"),
   email: text("email").notNull(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
+  password: text("password"),
   twoFactorEnabled: boolean("twoFactorEnabled").default(false),
   role: RoleEnum("roles").default("user"),
 })
@@ -50,9 +56,12 @@ export const accounts = pgTable(
 export const emailTokens = pgTable(
   "email_token",
   {
-    id: text("id").notNull(),
+    id: text("id")
+      .notNull()
+      .$defaultFn(() => createId()),
     token: text("token").notNull(),
     expires: timestamp("expires", { mode: "date" }).notNull(),
+    email: text("email").notNull(),
   },
   (et) => ({
     compositePk: primaryKey({
@@ -60,3 +69,11 @@ export const emailTokens = pgTable(
     }),
   })
 )
+
+export const products = pgTable("products", {
+  id: serial("id").primaryKey(),
+  description: text("description").notNull(),
+  title: text("title").notNull(),
+  created: timestamp("created").defaultNow(),
+  price: real("price").notNull(),
+})

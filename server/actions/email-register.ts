@@ -5,6 +5,8 @@ import { eq } from "drizzle-orm"
 import { createSafeActionClient } from "next-safe-action"
 import { db } from ".."
 import { users } from "../schema"
+import { sendVerificationEmail } from "./email"
+import { generateEmailVerificationToken } from "./token"
 
 const action = createSafeActionClient()
 
@@ -17,15 +19,29 @@ export const emailRegister = action(RegisterSchema,
     })
 
     if (existingUser) {
-      // if (!existingUser.emailVerified) {
-      //   const verificationToken = await generateEmailVerificationToken(email)
-      //   await sendVerificationEmail(
-      //     verificationToken[0].email,
-      //     verificationToken[0].token
-      //   )
-
-      // }
+      if (!existingUser.emailVerified) {
+        const verificationToken = await generateEmailVerificationToken(email)
+        await sendVerificationEmail(
+          verificationToken[0].email,
+          verificationToken[0].token
+        )
+        return { success: "Email confirmation resent " }
+      }
       return { error: 'User already exists' }
     }
-    return { success: email }
+    await db.insert(users).values({
+      email,
+      name,
+      password: hashedPassword,
+    })
+
+    const verificationToken = await generateEmailVerificationToken(email)
+
+    await sendVerificationEmail(
+      verificationToken[0].email,
+      verificationToken[0].token
+    )
+
+    return { success: "Confirmation Email Sent!" }
+
   })
