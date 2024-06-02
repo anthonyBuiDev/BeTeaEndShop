@@ -37,12 +37,12 @@ export default function ResetForm() {
   const [success, setSuccess] = useState("");
 
   const { execute, status } = useAction(reset, {
-    // onSuccess(data) {
-    //   if (data?.error) setError(data.error);
-    //   if (data?.success) {
-    //     setSuccess(data.success);
-    //   }
-    // },
+    onSuccess(data) {
+      if (data?.error) setError(data.error);
+      if (data?.success) {
+        setSuccess(data.success);
+      }
+    },
   });
 
   const onSubmit = (values: z.infer<typeof ResetSchema>) => {

@@ -15,11 +15,13 @@ export const reset = action(ResetSchema, async ({ email }) => {
   const existingUser = await db.query.users.findFirst({
     where: eq(users.email, email),
   })
+
   if (!existingUser) {
     return { error: "User not found" }
   }
 
   const passwordResetToken = await generatePasswordResetToken(email)
+
   if (!passwordResetToken) {
     return { error: "Token not generated" }
   }
