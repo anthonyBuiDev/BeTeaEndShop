@@ -57,6 +57,13 @@
       "when": 1717124465375,
       "tag": "0007_curly_karen_page",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1717236928872,
+      "tag": "0008_neat_santa_claus",
+      "breakpoints": true
     }
   ]
 }

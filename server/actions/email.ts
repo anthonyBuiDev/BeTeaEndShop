@@ -19,3 +19,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
   if (error) return console.log(error)
   if (data) return data
 }
+
+export const sendPasswordResetEmail = async () => {
+
+}
