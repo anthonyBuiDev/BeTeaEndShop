@@ -1,9 +1,9 @@
 import Nav from "@/components/navigation/nav";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 import { Provider } from "@/utils/Providers";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Link from "next/link";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -31,6 +31,7 @@ export default function RootLayout({
             <div className="mx-auto max-w-8xl flex-grow px-6 md:px-12">
               <Nav />
               {children}
+              <Toaster richColors />
             </div>
           </ThemeProvider>
         </Provider>
