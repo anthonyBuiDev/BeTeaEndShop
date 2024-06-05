@@ -41,7 +41,12 @@ export default function UserButton({ user }: Session) {
         <DropdownMenuTrigger>
           <Avatar className="h-7 w-7">
             {user.image && (
-              <Image src={user.image} alt={user.name!} fill={true} />
+              <Image
+                src={user.image}
+                alt={user.name!}
+                fill={true}
+                sizes="100vh"
+              />
             )}
             {!user.image && (
               <AvatarFallback className="bg-primary/25">
