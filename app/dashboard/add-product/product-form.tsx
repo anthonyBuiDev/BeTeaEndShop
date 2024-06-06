@@ -20,8 +20,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-// import { getProduct } from "@/server/actions/get-product";
 import { createEditProduct } from "@/server/actions/create-edit-product";
+import { getProduct } from "@/server/actions/get-product";
 import { ProductSchema, zProductSchema } from "@/types/product-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DollarSign } from "lucide-react";
@@ -47,29 +47,29 @@ export default function ProductForm() {
   const searchParams = useSearchParams();
   const editMode = searchParams.get("id");
 
-  // const checkProduct = async (id: number) => {
-  //   if (editMode) {
-  //     const data = await getProduct(id);
-  //     if (data.error) {
-  //       toast.error(data.error);
-  //       router.push("/dashboard/products");
-  //       return;
-  //     }
-  //     if (data.success) {
-  //       const id = parseInt(editMode);
-  //       form.setValue("title", data.success.title);
-  //       form.setValue("description", data.success.description);
-  //       form.setValue("price", data.success.price);
-  //       form.setValue("id", id);
-  //     }
-  //   }
-  // };
+  const checkProduct = async (id: number) => {
+    if (editMode) {
+      const data = await getProduct(id);
+      if (data.error) {
+        toast.error(data.error);
+        router.push("/dashboard/products");
+        return;
+      }
+      if (data.success) {
+        const id = parseInt(editMode);
+        form.setValue("title", data.success.title);
+        form.setValue("description", data.success.description);
+        form.setValue("price", data.success.price);
+        form.setValue("id", id);
+      }
+    }
+  };
 
-  // useEffect(() => {
-  //   if (editMode) {
-  //     checkProduct(parseInt(editMode));
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (editMode) {
+      checkProduct(parseInt(editMode));
+    }
+  }, []);
 
   const { execute, status } = useAction(createEditProduct, {
     onSuccess: (data) => {
