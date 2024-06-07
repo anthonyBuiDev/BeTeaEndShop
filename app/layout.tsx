@@ -1,12 +1,17 @@
-import Nav from "@/components/navigation/nav";
-import { ThemeProvider } from "@/components/providers/theme-provider";
-import { Toaster } from "@/components/ui/sonner";
-import { Provider } from "@/utils/Providers";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Roboto } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+import Nav from "@/components/navigation/nav";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+
+import { Toaster } from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
+
+const roboto = Roboto({
+  weight: ["400", "500", "700", "900"],
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,21 +25,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
-        <Provider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <div className="mx-auto max-w-8xl flex-grow px-6 md:px-12">
-              <Nav />
-              {children}
-              <Toaster richColors />
-            </div>
-          </ThemeProvider>
-        </Provider>
+      <body className={roboto.className}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <div className="mx-auto max-w-8xl flex-grow px-6 md:px-12">
+            <Nav />
+            <Toaster richColors />
+            {children}
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

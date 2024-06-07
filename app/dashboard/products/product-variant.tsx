@@ -20,18 +20,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { VariantsWithImagesTags } from "@/lib/infer-type";
+import { createEditVariant } from "@/server/actions/create-edit-variant";
+import { deleteVariant } from "@/server/actions/delete-variant";
 import { VariantSchema } from "@/types/variant-schema";
-// import { createVariant } from "@/server/actions/create-variant";
-// import { deleteVariant } from "@/server/actions/delete-variant";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
 import { forwardRef, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
-// import { InputTags } from "./input-tags";
-// import VariantImages from "./variant-images";
+import { InputTags } from "./input-tags";
+import VariantImages from "./variant-images";
 
 type VariantProps = {
   children: React.ReactNode;
@@ -87,38 +86,38 @@ export const ProductVariant = forwardRef<HTMLDivElement, VariantProps>(
       setEdit();
     }, [variant]);
 
-    // const { execute, status } = useAction(createVariant, {
-    //   onExecute() {
-    //     toast.loading("Creating variant", { duration: 1 });
-    //     setOpen(false);
-    //   },
-    //   onSuccess(data) {
-    //     if (data?.error) {
-    //       toast.error(data.error);
-    //     }
-    //     if (data?.success) {
-    //       toast.success(data.success);
-    //     }
-    //   },
-    // });
+    const { execute, status } = useAction(createEditVariant, {
+      onExecute() {
+        toast.loading("Creating variant", { duration: 500 });
+        setOpen(false);
+      },
+      onSuccess(data) {
+        if (data?.error) {
+          toast.error(data.error);
+        }
+        if (data?.success) {
+          toast.success(data.success);
+        }
+      },
+    });
 
-    // const variantAction = useAction(deleteVariant, {
-    //   onExecute() {
-    //     toast.loading("Deleting variant", { duration: 1 });
-    //     setOpen(false);
-    //   },
-    //   onSuccess(data) {
-    //     if (data?.error) {
-    //       toast.error(data.error);
-    //     }
-    //     if (data?.success) {
-    //       toast.success(data.success);
-    //     }
-    //   },
-    // });
+    const variantAction = useAction(deleteVariant, {
+      onExecute() {
+        toast.loading("Deleting variant", { duration: 1 });
+        setOpen(false);
+      },
+      onSuccess(data) {
+        if (data?.error) {
+          toast.error(data.error);
+        }
+        if (data?.success) {
+          toast.success(data.success);
+        }
+      },
+    });
 
     function onSubmit(values: z.infer<typeof VariantSchema>) {
-      // execute(values);
+      execute(values);
     }
 
     return (
@@ -174,30 +173,29 @@ export const ProductVariant = forwardRef<HTMLDivElement, VariantProps>(
                   <FormItem>
                     <FormLabel>Tags</FormLabel>
                     <FormControl>
-                      {/* <InputTags
+                      <InputTags
                         {...field}
                         onChange={(e) => field.onChange(e)}
-                      /> */}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              {/* <VariantImages /> */}
+              <VariantImages />
               <div className="flex items-center justify-center gap-4">
                 {editMode && variant && (
-                  // <Button
-                  //   variant={"destructive"}
-                  //   type="button"
-                  //   disabled={variantAction.status === "executing"}
-                  //   onClick={(e) => {
-                  //     e.preventDefault();
-                  //     variantAction.execute({ id: variant.id });
-                  //   }}
-                  // >
-                  //   Delete Variant
-                  // </Button>
-                  <Button></Button>
+                  <Button
+                    variant={"destructive"}
+                    type="button"
+                    disabled={variantAction.status === "executing"}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      variantAction.execute({ id: variant.id });
+                    }}
+                  >
+                    Delete Variant
+                  </Button>
                 )}
                 <Button
                   disabled={
