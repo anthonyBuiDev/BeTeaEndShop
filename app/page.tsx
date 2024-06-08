@@ -1,7 +1,18 @@
-export default function Home() {
+import Products from "@/components/products/page";
+import { db } from "@/server";
+
+export default async function Home() {
+  const data = await db.query.productVariants.findMany({
+    with: {
+      variantImages: true,
+      variantTags: true,
+      product: true,
+    },
+    orderBy: (productVariants, { desc }) => [desc(productVariants.id)],
+  });
   return (
     <main>
-      <h1>Welcome to NextJs</h1>
+      <Products variants={data} />
     </main>
   );
 }
