@@ -27,6 +27,7 @@ export const InputTags = forwardRef<HTMLInputElement, InputTagsProps>(
       }
     }
 
+    // function removePendingDataPoint() {}
     const { setFocus } = useFormContext();
 
     return (
@@ -52,7 +53,10 @@ export const InputTags = forwardRef<HTMLInputElement, InputTagsProps>(
                   {tag}
                   <button
                     className="ml-1 w-3"
-                    onClick={() => onChange(value.filter((i) => i !== tag))}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onChange(value.filter((i) => i !== tag));
+                    }}
                   >
                     <XIcon className="w-3" />
                   </button>
