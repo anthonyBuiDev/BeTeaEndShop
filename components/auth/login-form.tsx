@@ -11,9 +11,9 @@ import { emailSignIn } from "@/server/actions/email-signin";
 import { LoginSchema } from "@/types/login-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
-import { revalidatePath } from "next/cache";
+
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -40,7 +40,7 @@ export const LoginForm = () => {
       password: "",
     },
   });
-  // const router = useRouter();
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showTwoFactor, setShowTwoFactor] = useState(false);

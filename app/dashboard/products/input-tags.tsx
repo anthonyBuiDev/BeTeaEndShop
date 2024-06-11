@@ -27,7 +27,6 @@ export const InputTags = forwardRef<HTMLInputElement, InputTagsProps>(
       }
     }
 
-    // function removePendingDataPoint() {}
     const { setFocus } = useFormContext();
 
     return (

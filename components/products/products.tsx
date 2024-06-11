@@ -4,6 +4,8 @@ import formatPrice from "@/lib/format-price";
 import { VariantsWithProduct } from "@/lib/infer-type";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useMemo } from "react";
 import { Badge } from "../ui/badge";
 
 type ProductTypes = {
@@ -11,9 +13,21 @@ type ProductTypes = {
 };
 
 export default function Products({ variants }: ProductTypes) {
+  const params = useSearchParams();
+  const paramTag = params.get("tag");
+
+  const filtered = useMemo(() => {
+    if (paramTag && variants) {
+      return variants.filter((variant) =>
+        variant.variantTags.some((tag) => tag.tag === paramTag),
+      );
+    }
+    return variants;
+  }, [paramTag]);
+
   return (
     <main className="grid gap-12 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-      {variants.map((variant) => (
+      {filtered.map((variant) => (
         <Link
           className="py-2"
           key={variant.id}
