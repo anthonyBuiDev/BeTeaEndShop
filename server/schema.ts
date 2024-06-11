@@ -1,7 +1,7 @@
 import { createId } from "@paralleldrive/cuid2"
-import { relations } from "drizzle-orm"
-
+import { InferSelectModel, relations } from "drizzle-orm"
 import {
+  PgTable,
   boolean,
   index,
   integer,
@@ -12,8 +12,9 @@ import {
   serial,
   text,
   timestamp,
+  unique,
 } from "drizzle-orm/pg-core"
-import type { AdapterAccountType } from "next-auth/adapters"
+import type { AdapterAccount } from "next-auth/adapters"
 
 export const RoleEnum = pgEnum("roles", ["user", "admin"])
 
@@ -29,6 +30,7 @@ export const users = pgTable("user", {
   password: text("password"),
   twoFactorEnabled: boolean("twoFactorEnabled").default(false),
   role: RoleEnum("roles").default("user"),
+  customerID: text("customerID"),
 })
 
 export const accounts = pgTable(
@@ -37,7 +39,7 @@ export const accounts = pgTable(
     userId: text("userId")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
-    type: text("type").$type<AdapterAccountType>().notNull(),
+    type: text("type").$type<AdapterAccount["type"]>().notNull(),
     provider: text("provider").notNull(),
     providerAccountId: text("providerAccountId").notNull(),
     refresh_token: text("refresh_token"),
@@ -54,9 +56,8 @@ export const accounts = pgTable(
     }),
   })
 )
-
 export const emailTokens = pgTable(
-  "email_token",
+  "email_tokens",
   {
     id: text("id")
       .notNull()
@@ -65,10 +66,8 @@ export const emailTokens = pgTable(
     expires: timestamp("expires", { mode: "date" }).notNull(),
     email: text("email").notNull(),
   },
-  (et) => ({
-    compositePk: primaryKey({
-      columns: [et.id, et.token],
-    }),
+  (vt) => ({
+    compoundKey: primaryKey({ columns: [vt.id, vt.token] }),
   })
 )
 
@@ -87,14 +86,6 @@ export const passwordResetTokens = pgTable(
   })
 )
 
-export const products = pgTable("products", {
-  id: serial("id").primaryKey(),
-  description: text("description").notNull(),
-  title: text("title").notNull(),
-  created: timestamp("created").defaultNow(),
-  price: real("price").notNull(),
-})
-
 export const twoFactorTokens = pgTable(
   "two_factor_tokens",
   {
@@ -110,6 +101,14 @@ export const twoFactorTokens = pgTable(
     compoundKey: primaryKey({ columns: [vt.id, vt.token] }),
   })
 )
+
+export const products = pgTable("products", {
+  id: serial("id").primaryKey(),
+  description: text("description").notNull(),
+  title: text("title").notNull(),
+  created: timestamp("created").defaultNow(),
+  price: real("price").notNull(),
+})
 
 export const productVariants = pgTable("productVariants", {
   id: serial("id").primaryKey(),
@@ -173,7 +172,6 @@ export const variantTagsRelations = relations(variantTags, ({ one }) => ({
     relationName: "variantTags",
   }),
 }))
-
 
 export const reviews = pgTable(
   "reviews",

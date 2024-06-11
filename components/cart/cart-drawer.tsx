@@ -10,11 +10,10 @@ import {
   DrawerTrigger,
 } from "../ui/drawer";
 import CartItems from "./cart-items";
-
-// import CartMessage from "./cart-message";
-// import CartProgress from "./cart-progress";
-// import OrderConfirmed from "./order-confirmed";
-// import Payment from "./payment";
+import CartMessage from "./cart-message";
+import CartProgress from "./cart-progress";
+import OrderConfirmed from "./order-confirmed";
+import Payment from "./payment";
 
 export default function CartDrawer() {
   const { cart, checkoutProgress, setCheckoutProgress, cartOpen, setCartOpen } =
@@ -39,14 +38,15 @@ export default function CartDrawer() {
         </div>
       </DrawerTrigger>
       <DrawerContent className="fixed bottom-0 left-0 max-h-[70vh] min-h-[50vh]">
-        <DrawerHeader>{/* <CartMessage /> */}</DrawerHeader>
-        {/* <CartProgress /> */}
+        <DrawerHeader>
+          <CartMessage />
+        </DrawerHeader>
+        <CartProgress />
         <div className="overflow-auto p-4">
-          {/* {checkoutProgress === "cart-page" && <CartItems />}
-         
+          {checkoutProgress === "cart-page" && <CartItems />}
+
           {checkoutProgress === "payment-page" && <Payment />}
-          {checkoutProgress === "confirmation-page" && <OrderConfirmed />} */}
-          <CartItems />
+          {checkoutProgress === "confirmation-page" && <OrderConfirmed />}
         </div>
       </DrawerContent>
     </Drawer>
