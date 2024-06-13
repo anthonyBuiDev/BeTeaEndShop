@@ -8,9 +8,32 @@ import { Separator } from "@/components/ui/separator";
 import formatPrice from "@/lib/format-price";
 import { getReviewAverage } from "@/lib/review-avarage";
 import { db } from "@/server";
-import { productVariants } from "@/server/schema";
+import { getProduct } from "@/server/actions/get-product";
+import { productVariants, products } from "@/server/schema";
 import { eq } from "drizzle-orm";
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+
+type Props = {
+  params: { slug: string };
+};
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const variant = await db.query.productVariants.findFirst({
+    where: eq(productVariants.id, Number(params.slug)),
+    with: {
+      product: {
+        with: {
+          productVariants: {
+            with: { variantImages: true, variantTags: true },
+          },
+        },
+      },
+    },
+  });
+
+  return {
+    title: variant?.product.title,
+  };
+}
 
 export const revalidate = 60;
 
@@ -29,11 +52,6 @@ export async function generateStaticParams() {
   }
   return [];
 }
-
-export const metadata: Metadata = {
-  title: "",
-  description: "Everything from BeTeaEnd",
-};
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const variant = await db.query.productVariants.findFirst({
