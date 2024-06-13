@@ -115,7 +115,7 @@ export default function ProductForm() {
                 <FormItem>
                   <FormLabel>Product Title</FormLabel>
                   <FormControl>
-                    <Input placeholder="Saekdong Stripe" {...field} />
+                    <Input placeholder="BeTeaEnd Jean" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

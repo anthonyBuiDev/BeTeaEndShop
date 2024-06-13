@@ -1,6 +1,16 @@
 import DashboardNav from "@/components/navigation/dashboard-nav";
 import { auth } from "@/server/auth";
 import { BarChart, Package, PenSquare, Settings, Truck } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: {
+    template: "%s | BeTeaEnd Dashboard",
+    default: "BeTeaEnd Dashboard",
+  },
+  description: "The official Next.js Learn Dashboard built with App Router.",
+  metadataBase: new URL(process.env.DOMAIN_URL!),
+};
 
 export default async function DashboardLayout({
   children,

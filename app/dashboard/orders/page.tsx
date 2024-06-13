@@ -38,9 +38,15 @@ import { orders } from "@/server/schema";
 import { formatDistance, subMinutes } from "date-fns";
 import { eq } from "drizzle-orm";
 import { MoreHorizontal } from "lucide-react";
+
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Orders",
+};
 
 export default async function Page() {
   const user = await auth();

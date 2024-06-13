@@ -1,28 +1,30 @@
 import Algolia from "@/components/products/algolia";
 import ProductTags from "@/components/products/product-tags";
 import Products from "@/components/products/products";
-
-import { db } from "@/server";
-import { Suspense } from "react";
-import Loading from "./loading";
+import { fetchProducts } from "@/server/actions/fetch-products";
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from "@tanstack/react-query";
 
 export const revalidate = 60 * 60;
 
 export default async function Home() {
-  const data = await db.query.productVariants.findMany({
-    with: {
-      variantImages: true,
-      variantTags: true,
-      product: true,
-    },
-    orderBy: (productVariants, { desc }) => [desc(productVariants.id)],
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["products"],
+    queryFn: fetchProducts,
   });
 
   return (
-    <main className="">
-      <Algolia />
-      <ProductTags />
-      <Products variants={data} />
+    <main>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Algolia />
+        <ProductTags />
+        <Products />
+      </HydrationBoundary>
     </main>
   );
 }

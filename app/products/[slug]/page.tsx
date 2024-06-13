@@ -10,6 +10,7 @@ import { getReviewAverage } from "@/lib/review-avarage";
 import { db } from "@/server";
 import { productVariants } from "@/server/schema";
 import { eq } from "drizzle-orm";
+import type { Metadata } from "next";
 
 export const revalidate = 60;
 
@@ -28,6 +29,11 @@ export async function generateStaticParams() {
   }
   return [];
 }
+
+export const metadata: Metadata = {
+  title: "",
+  description: "Everything from BeTeaEnd",
+};
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const variant = await db.query.productVariants.findFirst({

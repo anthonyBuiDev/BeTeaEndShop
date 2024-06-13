@@ -1,5 +1,6 @@
 "use client";
 
+import { useGetPosts } from "@/data/get-products";
 import formatPrice from "@/lib/format-price";
 import { VariantsWithProduct } from "@/lib/infer-type";
 import Image from "next/image";
@@ -8,11 +9,13 @@ import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import { Badge } from "../ui/badge";
 
-type ProductTypes = {
-  variants: VariantsWithProduct[];
-};
+// type ProductTypes = {
+//   variants: VariantsWithProduct[];
+// };
 
-export default function Products({ variants }: ProductTypes) {
+export default function Products() {
+  const { data: products } = useGetPosts();
+  const variants = products?.success;
   const params = useSearchParams();
   const paramTag = params.get("tag");
 
@@ -27,7 +30,7 @@ export default function Products({ variants }: ProductTypes) {
 
   return (
     <main className="grid gap-12 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-      {filtered.map((variant) => (
+      {filtered?.map((variant) => (
         <Link
           className="py-2"
           key={variant.id}

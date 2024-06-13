@@ -9,6 +9,12 @@ import { db } from "@/server";
 import Earnings from "./earnings";
 import Sales from "./sales";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Analytics",
+};
+
 export const revalidate = 0;
 
 export default async function Analytics() {
