@@ -73,6 +73,7 @@ export default function ProductForm() {
 
   const { execute, status } = useAction(createEditProduct, {
     onSuccess: (data) => {
+      toast.dismiss();
       if (data?.error) {
         toast.error(data.error);
       }
